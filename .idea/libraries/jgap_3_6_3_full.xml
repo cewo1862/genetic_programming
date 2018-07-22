@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jgap_3.6.3_full">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jgap-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jgap-examples.jar!/" />
+      <root url="jar://$PROJECT_DIR$/jgap.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
