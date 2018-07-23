@@ -20,13 +20,77 @@ public class JSON_Reader {
         reader.close();
 
         JsonArray elementArray = personObject.getJsonArray("element");
+
+        int size = elementArray.size();
+
+        boolean isFirst = true;
+
+        double[] used_offsets = new double[ size ];
+
         for(int i = 0 ; i <= elementArray.size()-1; i++){
-            double x = 0;
-            System.out.println(elementArray.getJsonObject(i).getJsonNumber("offset"));
-            x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
-            float y = (float) x;
-            System.out.println(y);
+            double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
+
+            if(!contains(used_offsets, x, size, isFirst)){
+                isFirst = false;
+                used_offsets[i] = x;
+
+            }
+            else{
+                System.out.println("Doppelter Offsetvalue");
+            }
         }
+
+    }
+
+    public static boolean contains(double[] used_offsets, double value,int size, boolean isFirst){
+        if (isFirst){
+            return false;
+        }
+        else {
+            for (int i = 0; i <= size-1; i++) {
+                double y = used_offsets[i];
+                if (y == value) {
+                    System.out.println("y =" + y);
+                    System.out.println("value =" + value);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static double[] readJSON(String filepath) throws FileNotFoundException{
+        InputStream fis = new FileInputStream(filepath);
+
+        JsonReader reader = Json.createReader(fis);
+
+        JsonObject personObject = reader.readObject();
+
+        reader.close();
+
+        JsonArray elementArray = personObject.getJsonArray("element");
+
+        int size = elementArray.size();
+
+        boolean isFirst = true;
+
+        double[] used_offsets = new double[ size ];
+
+        for(int i = 0 ; i <= elementArray.size()-1; i++){
+            double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
+
+            if(!contains(used_offsets, x, size, isFirst)){
+                isFirst = false;
+                used_offsets[i] = x;
+
+            }
+            else{
+                System.out.println("Doppelter Offsetvalue");
+            }
+        }
+
+        return used_offsets;
 
     }
 }
