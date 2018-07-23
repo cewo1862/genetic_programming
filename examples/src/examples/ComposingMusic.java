@@ -1,5 +1,6 @@
 package examples;
 
+import examples.audiotechnik.JSON_Reader;
 import examples.audiotechnik.MapOffset;
 import org.jgap.*;
 import org.jgap.audit.EvolutionMonitor;
@@ -42,9 +43,11 @@ public class ComposingMusic {
         }
         Gene[] sampleGenes = new Gene[1];
         //upperBound auf größe der map, map.size()
-        double[] tmp = new double[5];
+        String filepath = "./resources/kout.json";
+        double[] offset_array = JSON_Reader.readJSON(filepath);
         MapOffset offset = new MapOffset();
-        Map offsetmap = offset.getOffset(tmp);
+
+        Map offsetmap = offset.getOffset(offset_array);
 
         sampleGenes[0] = new IntegerGene(conf, 0, offsetmap.size()); // Key Value out of Map
         IChromosome sampleChromosome = new Chromosome(conf, sampleGenes);
