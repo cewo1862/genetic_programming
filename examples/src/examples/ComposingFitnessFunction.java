@@ -8,16 +8,12 @@ public class ComposingFitnessFunction
         /** String containing the CVS revision. Read out via reflection!*/
         private final static String CVS_REVISION = "$Revision: 1.18 $";
 
-        private final int m_targetAmount;
+        private final int m_sequenceLength;
 
         public static final int MAX_BOUND = 4000;
 
-        public ComposingFitnessFunction(int a_targetAmount) {
-        if (a_targetAmount < 1 || a_targetAmount >= MAX_BOUND) {
-            throw new IllegalArgumentException(
-                    "Change amount must be between 1 and " + MAX_BOUND + " cents.");
-        }
-        m_targetAmount = a_targetAmount;
+        public ComposingFitnessFunction(int a_sequenceLength) {
+            m_sequenceLength = a_sequenceLength;
         }
 
         /**
@@ -50,47 +46,34 @@ public class ComposingFitnessFunction
         // fitness value for solutions representing fewer total coins, and
         // lower fitness values for solutions representing more total coins.
         // ------------------------------------------------------------------
-        int changeAmount = amountOfChange(a_subject);
-        int totalCoins = getTotalNumberOfCoins(a_subject);
-        int changeDifference = Math.abs(m_targetAmount - changeAmount);
-        double fitness;
-        if (defaultComparation) {
-            fitness = 0.0d;
-        }
-        else {
-            fitness = MAX_BOUND/2;
-        }
-        // Step 1: Determine distance of amount represented by solution from
-        // the target amount. If the change difference is greater than zero we
-        // will divide one by the difference in change between the
-        // solution amount and the target amount. That will give the desired
-        // effect of returning higher values for amounts closer to the target
-        // amount and lower values for amounts further away from the target
-        // amount.
-        // In the case where the change difference is zero it means that we have
-        // the correct amount and we assign a higher fitness value.
-        // ---------------------------------------------------------------------
-        if (defaultComparation) {
-            fitness += changeDifferenceBonus(MAX_BOUND/2, changeDifference);
-        }
-        else {
-            fitness -= changeDifferenceBonus(MAX_BOUND/2, changeDifference);
-        }
-        // Step 2: We divide the fitness value by a penalty based on the number of
-        // coins. The higher the number of coins the higher the penalty and the
-        // smaller the fitness value.
-        // And inversely the smaller number of coins in the solution the higher
-        // the resulting fitness value.
-        // -----------------------------------------------------------------------
-        if (defaultComparation) {
-            fitness -= computeCoinNumberPenalty(MAX_BOUND/2, totalCoins);
-        }
-        else {
-            fitness += computeCoinNumberPenalty(MAX_BOUND/2, totalCoins);
-        }
-        // Make sure fitness value is always positive.
-        // -------------------------------------------
+        int[] notes = getNotes(a_subject, m_sequenceLength);
+        double fitness = 10000.0d;
+        fitness = checkNote(notes, fitness);
+        
         return Math.max(1.0d, fitness);
+    }
+
+    public double checkNote(int[] notes, double fitness){
+        double correctNotes = 0.0d;
+        for(int i = 0; i <= notes.length; i++){
+            if(notes[i] == i){
+                correctNotes = correctNotes + 1.0d;
+            }
+        }
+
+        double tmp = fitness / (double)m_sequenceLength;
+        fitness = tmp * correctNotes;
+
+        return fitness;
+    }
+
+    public static int[] getNotes(IChromosome a_subject, int sequenceLength){
+        int[] notes = new int[sequenceLength];
+        for(int i = 0; i <= sequenceLength; i++){
+            int note = (int)a_subject.getGene(i).getAllele();
+            notes[i] = note;
+        }
+        return notes;
     }
 
 }
