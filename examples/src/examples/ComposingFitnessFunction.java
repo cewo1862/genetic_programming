@@ -55,7 +55,7 @@ public class ComposingFitnessFunction
 
     public double checkNote(int[] notes, double fitness){
         double correctNotes = 0.0d;
-        for(int i = 0; i <= notes.length; i++){
+        for(int i = 0; i <= notes.length-1; i++){
             if(notes[i] == i){
                 correctNotes = correctNotes + 1.0d;
             }
@@ -69,7 +69,7 @@ public class ComposingFitnessFunction
 
     public static int[] getNotes(IChromosome a_subject, int sequenceLength){
         int[] notes = new int[sequenceLength];
-        for(int i = 0; i <= sequenceLength; i++){
+        for(int i = 0; i <= sequenceLength-1; i++){
             int note = getNote(a_subject, i);
             notes[i] = note;
         }

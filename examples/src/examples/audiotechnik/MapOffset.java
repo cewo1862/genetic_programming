@@ -6,7 +6,7 @@ import java.util.Map;
 public class MapOffset {
     public Map getOffset(double[] offset){
         Map<Integer,Double> notemap = new HashMap<>();
-        for(int i = 0; i <= offset.length; i++){
+        for(int i = 0; i <= offset.length-1; i++){
             notemap.put(i, offset[i]);
         }
         return notemap;

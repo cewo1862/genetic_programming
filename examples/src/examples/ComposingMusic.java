@@ -60,7 +60,7 @@ public class ComposingMusic {
         // --------------------------------------------------------------
         Gene[] sampleGenes = new Gene[a_sequenceLength];
 
-            for(int i = 1; i<= a_sequenceLength; i++){
+            for(int i = 0; i<= a_sequenceLength-1; i++){
                 sampleGenes[i] = new IntegerGene(conf, 1, a_sequenceLength); //gene in bound of possible notes
         }
 
@@ -100,29 +100,9 @@ public class ComposingMusic {
         IChromosome bestSolutionSoFar = population.getFittestChromosome();
         System.out.println("The best solution has a fitness value of " +
                 bestSolutionSoFar.getFitnessValue());
-        System.out.println("It contains the following: ");
-        System.out.println("\t" +
-                MinimizingMakeChangeFitnessFunction.
-                        getNumberOfCoinsAtGene(
-                                bestSolutionSoFar, 0) + " quarters.");
-        System.out.println("\t" +
-                MinimizingMakeChangeFitnessFunction.
-                        getNumberOfCoinsAtGene(
-                                bestSolutionSoFar, 1) + " dimes.");
-        System.out.println("\t" +
-                MinimizingMakeChangeFitnessFunction.
-                        getNumberOfCoinsAtGene(
-                                bestSolutionSoFar, 2) + " nickels.");
-        System.out.println("\t" +
-                MinimizingMakeChangeFitnessFunction.
-                        getNumberOfCoinsAtGene(
-                                bestSolutionSoFar, 3) + " pennies.");
-        System.out.println("For a total of " +
-                MinimizingMakeChangeFitnessFunction.amountOfChange(
-                        bestSolutionSoFar) + " cents in " +
-                MinimizingMakeChangeFitnessFunction.
-                        getTotalNumberOfCoins(
-                                bestSolutionSoFar) + " coins.");
+        for(int i = 0; i < a_sequenceLength; i++){
+            System.out.println("The best solution for position: " + i + " is the offset value: " +  ComposingFitnessFunction.getNote(bestSolutionSoFar,i));
+        }
 
         int[] resultValues = new int[1];
         return resultValues;
