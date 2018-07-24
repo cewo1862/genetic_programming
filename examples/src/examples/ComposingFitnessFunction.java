@@ -70,10 +70,14 @@ public class ComposingFitnessFunction
     public static int[] getNotes(IChromosome a_subject, int sequenceLength){
         int[] notes = new int[sequenceLength];
         for(int i = 0; i <= sequenceLength; i++){
-            int note = (int)a_subject.getGene(i).getAllele();
+            int note = getNote(a_subject, i);
             notes[i] = note;
         }
         return notes;
     }
 
+    public static int getNote(IChromosome a_subject, int genePosition){
+        int tmp = (int) a_subject.getGene(genePosition).getAllele();
+        return tmp;
+    }
 }
