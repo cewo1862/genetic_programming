@@ -11,6 +11,19 @@ import java.io.InputStream;
 public class JSON_Reader {
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        String filename = args[0];
+
+        System.out.println(filename);
+
+        String directory = "./resources/"+ filename;
+
+        System.out.println(directory);
+
+        if(directory.equals("./resources/kout.json")){
+            System.out.println("correct filename");
+        }
+
         InputStream fis = new FileInputStream("./resources/kout.json");
 
         JsonReader reader = Json.createReader(fis);
