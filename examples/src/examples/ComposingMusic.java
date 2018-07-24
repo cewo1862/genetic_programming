@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 
 public class ComposingMusic {
 
@@ -26,7 +27,7 @@ public class ComposingMusic {
     private static final int MAX_ALLOWED_EVOLUTIONS = 50;
     public static EvolutionMonitor m_monitor;
 
-    public static int[] composeMusic(int[] )
+    public static int[] composeMusic(int[] sequenceValues, int a_sequenceLength)
             throws Exception{
         // Start with a DefaultConfiguration, which comes setup with the
         // most common settings.
@@ -43,10 +44,9 @@ public class ComposingMusic {
         // MinimizingMakeChangeFitnessFunction. We construct it with
         // the target amount of change passed in to this method.
         // ---------------------------------------------------------
-    /* TODO: FitnessFunction aufstellen und an conf weitergeben
     FitnessFunction myFunc =
             new ComposingFitnessFunction(a_sequenceLength);
-    conf.setFitnessFunction(myFunc);*/
+    conf.setFitnessFunction(myFunc);
         // Now we need to tell the Configuration object how we want our
         // Chromosomes to be setup. We do that by actually creating a
         // sample Chromosome and then setting it on the Configuration
@@ -58,15 +58,11 @@ public class ComposingMusic {
         // also lets us specify a lower and upper bound, which we set
         // to sensible values for each coin type.
         // --------------------------------------------------------------
-        Gene[] sampleGenes = new Gene[1];
-        Map alleles = new Hashtable();
-        alleles = new Hashtable();
-        //Ein Allel je Note?
-        alleles.put("v1", new Integer(1));
-        alleles.put("v2",new Integer(2));
-        alleles.put("v3",new Integer(3));
-        alleles.put("v4",new Integer(4));
-        sampleGenes[0] = new MapGene(conf, alleles); // Gene der Notenfolge
+        Gene[] sampleGenes = new Gene[a_sequenceLength];
+
+            for(int i = 1; i<= a_sequenceLength; i++){
+                sampleGenes[i] = new IntegerGene(conf, 1, a_sequenceLength); //gene in bound of possible notes
+        }
 
         IChromosome sampleChromosome = new Chromosome(conf, sampleGenes);
         conf.setSampleChromosome(sampleChromosome);
@@ -143,9 +139,17 @@ public class ComposingMusic {
         //map the offset values in the array to integer values
         MapOffset offset = new MapOffset();
         Map offsetmap = offset.getOffset(offset_array);
+
+        int sequenceLength = offsetmap.size();
+
+        int[] sequenceValues = new int[sequenceLength];
+        for(int i = 0; i<= sequenceLength-1;i++){
+            sequenceValues[i] = i;
+        }
+
         //TODO composeMusic() implementieren mit Ausgabe von einer Ergebnisnotensequenz
 
-        int[] resultValues = composeMusic();
+        int[] resultValues = composeMusic(sequenceValues,sequenceLength);
 
         //TODO Ergebnissequenz auf Offsetwerte mappen
 
