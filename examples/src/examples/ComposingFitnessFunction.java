@@ -12,7 +12,7 @@ public class ComposingFitnessFunction
 
         public static final int MAX_BOUND = 4000;
 
-        public MinimizingMakeChangeFitnessFunction(int a_targetAmount) {
+        public ComposingFitnessFunction(int a_targetAmount) {
         if (a_targetAmount < 1 || a_targetAmount >= MAX_BOUND) {
             throw new IllegalArgumentException(
                     "Change amount must be between 1 and " + MAX_BOUND + " cents.");
@@ -93,111 +93,4 @@ public class ComposingFitnessFunction
         return Math.max(1.0d, fitness);
     }
 
-    /**
-     * Bonus calculation of fitness value.
-     * @param a_maxFitness maximum fitness value appliable
-     * @param a_changeDifference change difference in coins for the coins problem
-     * @return bonus for given change difference
-     *
-     * @author Klaus Meffert
-     * @since 2.3
-     */
-    protected double changeDifferenceBonus(double a_maxFitness,
-                                           int a_changeDifference) {
-        if (a_changeDifference == 0) {
-            return a_maxFitness;
-        }
-        else {
-            // we arbitrarily work with half of the maximum fitness as basis for non-
-            // optimal solutions (concerning change difference)
-            if (a_changeDifference * a_changeDifference >= a_maxFitness / 2) {
-                return 0.0d;
-            }
-            else {
-                return a_maxFitness / 2 - a_changeDifference * a_changeDifference;
-            }
-        }
-    }
-
-    /**
-     * Calculates the penalty to apply to the fitness value based on the ammount
-     * of coins in the solution
-     *
-     * @param a_maxFitness maximum fitness value allowed
-     * @param a_coins number of coins in the solution
-     * @return penalty for the fitness value base on the number of coins
-     *
-     * @author John Serri
-     * @since 2.2
-     */
-    protected double computeCoinNumberPenalty(double a_maxFitness, int a_coins) {
-        if (a_coins == 1) {
-            // we know the solution cannot have less than one coin
-            return 0;
-        }
-        else {
-            // The more coins the more penalty, but not more than the maximum fitness
-            // value possible. Let's avoid linear behavior and use
-            // exponential penalty calculation instead
-            return (Math.min(a_maxFitness, a_coins * a_coins));
-        }
-    }
-
-    /**
-     * Calculates the total amount of change (in cents) represented by
-     * the given potential solution and returns that amount.
-     *
-     * @param a_potentialSolution the potential solution to evaluate
-     * @return The total amount of change (in cents) represented by the
-     * given solution
-     *
-     * @author Neil Rotstan
-     * @since 1.0
-     */
-    public static int amountOfChange(IChromosome a_potentialSolution) {
-        int numQuarters = getNumberOfCoinsAtGene(a_potentialSolution, 0);
-        int numDimes = getNumberOfCoinsAtGene(a_potentialSolution, 1);
-        int numNickels = getNumberOfCoinsAtGene(a_potentialSolution, 2);
-        int numPennies = getNumberOfCoinsAtGene(a_potentialSolution, 3);
-        return (numQuarters * 25) + (numDimes * 10) + (numNickels * 5) +
-                numPennies;
-    }
-
-    /**
-     * Retrieves the number of coins represented by the given potential
-     * solution at the given gene position.
-     *
-     * @param a_potentialSolution the potential solution to evaluate
-     * @param a_position the gene position to evaluate
-     * @return the number of coins represented by the potential solution at the
-     * given gene position
-     *
-     * @author Neil Rotstan
-     * @since 1.0
-     */
-    public static int getNumberOfCoinsAtGene(IChromosome a_potentialSolution,
-                                             int a_position) {
-        Integer numCoins =
-                (Integer) a_potentialSolution.getGene(a_position).getAllele();
-        return numCoins.intValue();
-    }
-
-    /**
-     * Returns the total number of coins represented by all of the genes in
-     * the given potential solution.
-     *
-     * @param a_potentialsolution the potential solution to evaluate
-     * @return total number of coins represented by the given Chromosome
-     *
-     * @author Neil Rotstan
-     * @since 1.0
-     */
-    public static int getTotalNumberOfCoins(IChromosome a_potentialsolution) {
-        int totalCoins = 0;
-        int numberOfGenes = a_potentialsolution.size();
-        for (int i = 0; i < numberOfGenes; i++) {
-            totalCoins += getNumberOfCoinsAtGene(a_potentialsolution, i);
-        }
-        return totalCoins;
-    }
 }

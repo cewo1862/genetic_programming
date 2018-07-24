@@ -26,7 +26,7 @@ public class ComposingMusic {
     private static final int MAX_ALLOWED_EVOLUTIONS = 50;
     public static EvolutionMonitor m_monitor;
 
-    public static int[] composeMusic()
+    public static int[] composeMusic(int[] )
             throws Exception{
         // Start with a DefaultConfiguration, which comes setup with the
         // most common settings.
@@ -38,13 +38,14 @@ public class ComposingMusic {
         // size by one sometimes!
         // -------------------------------------------------------------
         conf.setPreservFittestIndividual(true);
+        conf.setKeepPopulationSizeConstant(false);
         // Set the fitness function we want to use, which is our
         // MinimizingMakeChangeFitnessFunction. We construct it with
         // the target amount of change passed in to this method.
         // ---------------------------------------------------------
     /* TODO: FitnessFunction aufstellen und an conf weitergeben
     FitnessFunction myFunc =
-            new MinimizingMakeChangeFitnessFunction(a_targetChangeAmount);
+            new ComposingFitnessFunction(a_sequenceLength);
     conf.setFitnessFunction(myFunc);*/
         // Now we need to tell the Configuration object how we want our
         // Chromosomes to be setup. We do that by actually creating a
@@ -75,7 +76,7 @@ public class ComposingMusic {
         // finding the answer), but the longer it will take to evolve
         // the population (which could be seen as bad).
         // ------------------------------------------------------------
-        conf.setPopulationSize(80);
+        conf.setPopulationSize(20);
 
         // Create random initial population of Chromosomes.
         // ------------------------------------------------
@@ -127,6 +128,8 @@ public class ComposingMusic {
                         getTotalNumberOfCoins(
                                 bestSolutionSoFar) + " coins.");
 
+        int[] resultValues = new int[1];
+        return resultValues;
     }
 
     public static void main(String[] args)
