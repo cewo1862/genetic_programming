@@ -40,16 +40,21 @@ public class JSON_Reader {
 
         double[] used_offsets = new double[ size ];
 
+        int [] numElementsAt = new int[size];
+
         for(int i = 0 ; i <= elementArray.size()-1; i++){
             double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
-
+            int y = (int) x;
             if(!contains(used_offsets, x, size, isFirst)){
                 isFirst = false;
                 used_offsets[i] = x;
+                numElementsAt[y] = 1;
 
             }
             else{
                 System.out.println("Doppelter Offsetvalue");
+                numElementsAt[y] = numElementsAt[y] +1;
+                System.out.println(numElementsAt[y] + " mal die " + x);
             }
         }
 
@@ -90,19 +95,23 @@ public class JSON_Reader {
 
         double[] used_offsets = new double[ size ];
 
+        int [] numElementsAt = new int[size];
+
         for(int i = 0 ; i <= elementArray.size()-1; i++){
             double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
-
+            int y = (int) x;
             if(!contains(used_offsets, x, size, isFirst)){
                 isFirst = false;
                 used_offsets[i] = x;
+                numElementsAt[y] = 1;
 
             }
             else{
                 System.out.println("Doppelter Offsetvalue");
+                numElementsAt[y] = numElementsAt[y] +1;
+                System.out.println(numElementsAt[y] + " mal die " + x);
             }
         }
-
         return used_offsets;
 
     }

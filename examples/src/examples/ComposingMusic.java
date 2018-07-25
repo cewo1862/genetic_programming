@@ -24,7 +24,7 @@ import java.util.Random;
 public class ComposingMusic {
 
     private final static String CVS_REVISION = "$Revision: 1.27 $";
-    private static final int MAX_ALLOWED_EVOLUTIONS = 50;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
     public static EvolutionMonitor m_monitor;
 
     public static int[] composeMusic(int[] sequenceValues, int a_sequenceLength)
@@ -72,7 +72,7 @@ public class ComposingMusic {
         // finding the answer), but the longer it will take to evolve
         // the population (which could be seen as bad).
         // ------------------------------------------------------------
-        conf.setPopulationSize(20);
+        conf.setPopulationSize(100);
 
         // Create random initial population of Chromosomes.
         // ------------------------------------------------
@@ -96,15 +96,16 @@ public class ComposingMusic {
                 + " ms");
         // Display the best solution we found.
         // -----------------------------------
-        // TODO Resultate ausgeben oder analysieren und "fittestes" zum convertieren ausgeben
+
+        int[] resultValues = new int[a_sequenceLength];
         IChromosome bestSolutionSoFar = population.getFittestChromosome();
         System.out.println("The best solution has a fitness value of " +
                 bestSolutionSoFar.getFitnessValue());
         for(int i = 0; i < a_sequenceLength; i++){
             System.out.println("The best solution for position: " + i + " is the offset value: " +  ComposingFitnessFunction.getNote(bestSolutionSoFar,i));
+            resultValues[i] = ComposingFitnessFunction.getNote(bestSolutionSoFar,i);
         }
 
-        int[] resultValues = new int[1];
         return resultValues;
     }
 
@@ -127,7 +128,6 @@ public class ComposingMusic {
             sequenceValues[i] = i;
         }
 
-        //TODO composeMusic() implementieren mit Ausgabe von einer Ergebnisnotensequenz
 
         int[] resultValues = composeMusic(sequenceValues,sequenceLength);
 
