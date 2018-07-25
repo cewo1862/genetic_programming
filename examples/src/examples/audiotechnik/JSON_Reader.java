@@ -40,7 +40,9 @@ public class JSON_Reader {
 
         double[] used_offsets = new double[ size ];
 
-        int [] numElementsAt = new int[size];
+        int [] numElementsAtValue = new int[size];
+
+        int [] [] elementAt = new int[size][size];
 
         for(int i = 0 ; i <= elementArray.size()-1; i++){
             double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
@@ -48,13 +50,20 @@ public class JSON_Reader {
             if(!contains(used_offsets, x, size, isFirst)){
                 isFirst = false;
                 used_offsets[i] = x;
-                numElementsAt[y] = 1;
+                numElementsAtValue[y] = 1;
+                elementAt[y][0] = i;
 
             }
             else{
                 System.out.println("Doppelter Offsetvalue");
-                numElementsAt[y] = numElementsAt[y] +1;
-                System.out.println(numElementsAt[y] + " mal die " + x);
+                System.out.println();
+                elementAt[y] [numElementsAtValue[y]] = i;
+                numElementsAtValue[y] = numElementsAtValue[y] +1;
+                System.out.println(numElementsAtValue[y] + " mal die " + x);
+                System.out.println("An den Stellen: ");
+                for(int s = 0; s<numElementsAtValue[y];s++){
+                    System.out.println(elementAt[y][s]);
+                }
             }
         }
 
@@ -95,7 +104,9 @@ public class JSON_Reader {
 
         double[] used_offsets = new double[ size ];
 
-        int [] numElementsAt = new int[size];
+        int [] numElementsAtValue = new int[size];
+
+        int [] [] elementAt = new int[size][size];
 
         for(int i = 0 ; i <= elementArray.size()-1; i++){
             double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
@@ -103,13 +114,20 @@ public class JSON_Reader {
             if(!contains(used_offsets, x, size, isFirst)){
                 isFirst = false;
                 used_offsets[i] = x;
-                numElementsAt[y] = 1;
+                numElementsAtValue[y] = 1;
+                elementAt[y][1] = i;
 
             }
             else{
                 System.out.println("Doppelter Offsetvalue");
-                numElementsAt[y] = numElementsAt[y] +1;
-                System.out.println(numElementsAt[y] + " mal die " + x);
+                System.out.println();
+                numElementsAtValue[y] = numElementsAtValue[y] +1;
+                elementAt[y] [numElementsAtValue[y]] = i;
+                System.out.println(numElementsAtValue[y] + " mal die " + x);
+                System.out.println("An den Stellen: ");
+                for(int s = 0; s<=numElementsAtValue[y];s++){
+                    System.out.println(elementAt[y][s]);
+                }
             }
         }
         return used_offsets;

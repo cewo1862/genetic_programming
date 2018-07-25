@@ -21,10 +21,12 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 
+import static examples.audiotechnik.JSON_Writer.writeJSON;
+
 public class ComposingMusic {
 
     private final static String CVS_REVISION = "$Revision: 1.27 $";
-    private static final int MAX_ALLOWED_EVOLUTIONS = 5000;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 100;
     public static EvolutionMonitor m_monitor;
 
     public static int[] composeMusic(int[] sequenceValues, int a_sequenceLength)
@@ -72,7 +74,7 @@ public class ComposingMusic {
         // finding the answer), but the longer it will take to evolve
         // the population (which could be seen as bad).
         // ------------------------------------------------------------
-        conf.setPopulationSize(100);
+        conf.setPopulationSize(20);
 
         // Create random initial population of Chromosomes.
         // ------------------------------------------------
@@ -132,7 +134,7 @@ public class ComposingMusic {
         int[] resultValues = composeMusic(sequenceValues,sequenceLength);
 
         //TODO Ergebnissequenz auf Offsetwerte mappen
-
+        writeJSON(filepath,resultValues);
         //TODO mit Offsetwerten Noten in JSON-Format ausgeben und in File speichern
 
     }
