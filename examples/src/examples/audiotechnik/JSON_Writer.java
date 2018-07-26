@@ -7,6 +7,7 @@ import javax.json.JsonReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import static examples.audiotechnik.JSON_Reader.contains;
 
@@ -49,7 +50,7 @@ public class JSON_Writer {
                 isFirst = false;
                 used_offsets[i] = x;
                 numElementsAtValue[y] = 1;
-                elementAt[y][0] = i;
+                elementAt[y][1] = i;
 
             }
             else{
@@ -59,7 +60,7 @@ public class JSON_Writer {
                 numElementsAtValue[y] = numElementsAtValue[y] +1;
                 System.out.println(numElementsAtValue[y] + " mal die " + x);
                 System.out.println("An den Stellen: ");
-                for(int s = 0; s<numElementsAtValue[y];s++){
+                for(int s = 1; s<numElementsAtValue[y];s++){
                     System.out.println(elementAt[y][s]);
                 }
             }
@@ -78,7 +79,7 @@ public class JSON_Writer {
 
     }
 
-    public static void writeJSON(String filepath,int[] resultValues ) throws FileNotFoundException {
+    public static void writeJSON(String filepath,int[] resultValues ) throws FileNotFoundException,ArrayIndexOutOfBoundsException {
 
         InputStream fis = new FileInputStream(filepath);
 
@@ -102,7 +103,6 @@ public class JSON_Writer {
 
         int [] [] elementAt = new int[size][size];
 
-        JsonArray cloneArray = clone.getJsonArray("element");
 
         for(int i = 0 ; i <= elementArray.size()-1; i++){
             double x = elementArray.getJsonObject(i).getJsonNumber("offset").doubleValue();
@@ -118,20 +118,22 @@ public class JSON_Writer {
                 numElementsAtValue[y] = numElementsAtValue[y] +1;
                 elementAt[y] [numElementsAtValue[y]] = i;
                 for(int s = 0; s<=numElementsAtValue[y];s++){
-                    System.out.println(elementAt[y][s]);
+                   // System.out.println(elementAt[y][s]);
                 }
             }
         }
 
         double total_duration = 0.0d;
 
+        PrintWriter out = new PrintWriter("./resources/result.json");
+
         String JSON_Out = "{\"element\": [";
 
-        for(int currentPosInSequence = 0; currentPosInSequence < resultValues.length-1; currentPosInSequence++){
+        for(int currentPosInSequence = 0; currentPosInSequence < resultValues.length; currentPosInSequence++){
             int currentVal = resultValues[currentPosInSequence];
-            int numElements = numElementsAtValue[currentVal];
+            int numElements = numElementsAtValue[currentVal-1];
             int currentIndexOfVal = 0;
-            double sub_duration = 0.0d;
+            double[] sub_durations;
             String type = "";
             switch (numElements){
                 case 1:
@@ -150,6 +152,7 @@ public class JSON_Writer {
 
                         total_duration = total_duration + duration_value;
                         JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
+                        //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
                     }
                     else if(type.equals("chord")){
                         String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
@@ -169,11 +172,12 @@ public class JSON_Writer {
 
                         total_duration = total_duration + duration_value;
                         JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
+                        //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
                     }
                 break;
 
                 case 2:
-                    sub_duration = 0.0d;
+                    sub_durations = new double[numElements];
                     for(int i = 0; i < numElements; i++) {
                         currentIndexOfVal = elementAt[currentVal][i];
 
@@ -190,7 +194,9 @@ public class JSON_Writer {
 
                             total_duration = total_duration + duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
-                        } else if (type.equals("chord")) {
+                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
+                        }
+                        else if (type.equals("chord")) {
                             String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
                             String offset = String.valueOf(total_duration);
                             double duration_value = elementArray.getJsonObject(currentIndexOfVal).getJsonNumber("duration").doubleValue();
@@ -205,16 +211,17 @@ public class JSON_Writer {
                                     pitch = pitch + "\", \"";
                                 }
                             }
-                            sub_duration = sub_duration + duration_value;
+                            sub_durations[i] = duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
+                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
                         }
                     }
 
-                    total_duration = total_duration + sub_duration;
+                    total_duration = total_duration + Math.max(sub_durations[0],sub_durations[1]);
                     break;
 
                 case 3:
-                    sub_duration = 0.0d;
+                    sub_durations = new double[numElements];
                     for(int i = 0; i < numElements; i++) {
                         currentIndexOfVal = elementAt[currentVal][i];
 
@@ -231,6 +238,7 @@ public class JSON_Writer {
 
                             total_duration = total_duration + duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
+                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
                         } else if (type.equals("chord")) {
                             String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
                             String offset = String.valueOf(total_duration);
@@ -247,18 +255,25 @@ public class JSON_Writer {
                                 }
                             }
 
-                            sub_duration = sub_duration + duration_value;
+                            sub_durations[i] = duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
+                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
                         }
                     }
 
-                    total_duration = total_duration + sub_duration;
+                    total_duration = total_duration + Math.max(sub_durations[0],Math.max(sub_durations[1],sub_durations[2]));
                     break;
 
             }
 
     }
+    JSON_Out = JSON_Out.substring(0,JSON_Out.length()-2);
+    JSON_Out = JSON_Out + "]}";
+        //out.write("]}");
     System.out.println(JSON_Out);
+        out.write(JSON_Out);
+        out.flush();
+        out.close();
     }
 
 }

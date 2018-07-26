@@ -104,7 +104,7 @@ public class ComposingMusic {
         System.out.println("The best solution has a fitness value of " +
                 bestSolutionSoFar.getFitnessValue());
         for(int i = 0; i < a_sequenceLength; i++){
-            System.out.println("The best solution for position: " + i + " is the offset value: " +  ComposingFitnessFunction.getNote(bestSolutionSoFar,i));
+           // System.out.println("The best solution for position: " + i + " is the offset value: " +  ComposingFitnessFunction.getNote(bestSolutionSoFar,i));
             resultValues[i] = ComposingFitnessFunction.getNote(bestSolutionSoFar,i);
         }
 
@@ -133,9 +133,7 @@ public class ComposingMusic {
 
         int[] resultValues = composeMusic(sequenceValues,sequenceLength);
 
-        //TODO Ergebnissequenz auf Offsetwerte mappen
         writeJSON(filepath,resultValues);
-        //TODO mit Offsetwerten Noten in JSON-Format ausgeben und in File speichern
 
     }
 
