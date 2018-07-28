@@ -127,9 +127,9 @@ public class JSON_Writer {
 
         PrintWriter out = new PrintWriter("./resources/result.json");
 
-        //String JSON_Out = "{\"element\": [";
+        String JSON_Out = "{\"element\": [";
         //for valid JSON
-        String JSON_Out ="";
+        JSON_Out ="";
         for(int currentPosInSequence = 0; currentPosInSequence < resultValues.length; currentPosInSequence++){
             int currentVal = resultValues[currentPosInSequence];
             int numElements = numElementsAtValue[currentVal-1];
