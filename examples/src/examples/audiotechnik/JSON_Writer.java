@@ -127,8 +127,9 @@ public class JSON_Writer {
 
         PrintWriter out = new PrintWriter("./resources/result.json");
 
-        String JSON_Out = "{\"element\": [";
-
+        //String JSON_Out = "{\"element\": [";
+        //for valid JSON
+        String JSON_Out ="";
         for(int currentPosInSequence = 0; currentPosInSequence < resultValues.length; currentPosInSequence++){
             int currentVal = resultValues[currentPosInSequence];
             int numElements = numElementsAtValue[currentVal-1];
@@ -152,7 +153,8 @@ public class JSON_Writer {
 
                         total_duration = total_duration + duration_value;
                         JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
-                        //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
+                        // for valid JSON
+                        //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "}\n";
                     }
                     else if(type.equals("chord")){
                         String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
@@ -172,7 +174,7 @@ public class JSON_Writer {
 
                         total_duration = total_duration + duration_value;
                         JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
-                        //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
+                        //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]}\n";
                     }
                 break;
 
@@ -194,7 +196,7 @@ public class JSON_Writer {
 
                             total_duration = total_duration + duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
-                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
+                            //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "}\n";
                         }
                         else if (type.equals("chord")) {
                             String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
@@ -213,7 +215,7 @@ public class JSON_Writer {
                             }
                             sub_durations[i] = duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
-                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
+                            //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]}\n";
                         }
                     }
 
@@ -238,7 +240,7 @@ public class JSON_Writer {
 
                             total_duration = total_duration + duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n";
-                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch +"\", \"offset\": " + offset + ", \"duration\": " + duration + "},\n");
+                            //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"octave\": " + octave + ", \"pitch\": \"" + pitch + "\", \"offset\": " + offset + ", \"duration\": " + duration + "}\n";
                         } else if (type.equals("chord")) {
                             String name = elementArray.getJsonObject(currentIndexOfVal).getString("name");
                             String offset = String.valueOf(total_duration);
@@ -257,7 +259,7 @@ public class JSON_Writer {
 
                             sub_durations[i] = duration_value;
                             JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n";
-                            //out.write("{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " +  offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]},\n");
+                            //JSON_Out = JSON_Out + "{\"type\": \"" + type + "\", \"name\": \"" + name + "\", \"offset\": " + offset + ", \"duration\": " + duration + ", \"pitch\": [\"" + pitch + "\"]}\n";
                         }
                     }
 
@@ -268,7 +270,10 @@ public class JSON_Writer {
 
     }
     JSON_Out = JSON_Out.substring(0,JSON_Out.length()-2);
+
     JSON_Out = JSON_Out + "]}";
+
+    //for valid JSON
         //out.write("]}");
     System.out.println(JSON_Out);
         out.write(JSON_Out);
