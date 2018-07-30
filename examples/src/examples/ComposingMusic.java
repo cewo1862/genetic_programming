@@ -26,7 +26,7 @@ import static examples.audiotechnik.JSON_Writer.writeJSON;
 public class ComposingMusic {
 
     private final static String CVS_REVISION = "$Revision: 1.27 $";
-    private static final int MAX_ALLOWED_EVOLUTIONS = 100;
+    private static final int MAX_ALLOWED_EVOLUTIONS = 500;
     public static EvolutionMonitor m_monitor;
 
     public static int[] composeMusic(int[] sequenceValues, int a_sequenceLength)

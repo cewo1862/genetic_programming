@@ -63,7 +63,6 @@ public class ComposingFitnessFunction
 
         double tmp = fitness / (double)m_sequenceLength;
         fitness = tmp * correctNotes;
-
         return fitness;
     }
 

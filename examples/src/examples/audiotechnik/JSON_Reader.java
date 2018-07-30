@@ -55,15 +55,15 @@ public class JSON_Reader {
 
             }
             else{
-                System.out.println("Doppelter Offsetvalue");
-                System.out.println();
+               // System.out.println("Doppelter Offsetvalue");
+                //System.out.println();
                 elementAt[y] [numElementsAtValue[y]] = i;
                 numElementsAtValue[y] = numElementsAtValue[y] +1;
-                System.out.println(numElementsAtValue[y] + " mal die " + x);
-                System.out.println("An den Stellen: ");
-                for(int s = 0; s<numElementsAtValue[y];s++){
+                //System.out.println(numElementsAtValue[y] + " mal die " + x);
+                //System.out.println("An den Stellen: ");
+                /*for(int s = 0; s<numElementsAtValue[y];s++){
                     System.out.println(elementAt[y][s]);
-                }
+                }*/
             }
         }
 
@@ -77,8 +77,8 @@ public class JSON_Reader {
             for (int i = 0; i <= size-1; i++) {
                 double y = used_offsets[i];
                 if (y == value) {
-                    System.out.println("y =" + y);
-                    System.out.println("value =" + value);
+                    //System.out.println("y =" + y);
+                    //System.out.println("value =" + value);
                     return true;
                 }
             }

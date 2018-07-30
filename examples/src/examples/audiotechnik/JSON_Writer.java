@@ -273,7 +273,7 @@ public class JSON_Writer {
     JSON_Out = JSON_Out + "]}";
 
     //for valid JSON
-    System.out.println(JSON_Out);
+    //System.out.println(JSON_Out);
         out.write(JSON_Out);
         out.flush();
         out.close();
