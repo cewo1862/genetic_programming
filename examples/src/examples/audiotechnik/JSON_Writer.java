@@ -81,7 +81,7 @@ public class JSON_Writer {
 
     public static void writeJSON(String filepath,int[] resultValues ) throws FileNotFoundException,ArrayIndexOutOfBoundsException {
 
-        InputStream fis = new FileInputStream(filepath);
+        InputStream fis = new FileInputStream(filepath+".json");
 
         JsonReader reader = Json.createReader(fis);
 
@@ -125,7 +125,7 @@ public class JSON_Writer {
 
         double total_duration = 0.0d;
 
-        PrintWriter out = new PrintWriter("./resources/result.json");
+        PrintWriter out = new PrintWriter(filepath + "-result.json");
 
         String JSON_Out = "{\"element\": [";
         //for valid JSON
@@ -273,7 +273,6 @@ public class JSON_Writer {
     JSON_Out = JSON_Out + "]}";
 
     //for valid JSON
-        //out.write("]}");
     System.out.println(JSON_Out);
         out.write(JSON_Out);
         out.flush();

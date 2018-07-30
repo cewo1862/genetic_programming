@@ -10,7 +10,7 @@ def main():
     parser.add_argument("file",type=str,help="path to file with parameters")
 
     args = parser.parse_args()
-    inFile = "./" + args.file + ".midi"
+    inFile = "./" + args.file + ".mid"
     outFile ="./" + args.file + ".json"
     if not os.path.isfile(inFile):
         print(inFile + " is no file")
@@ -73,6 +73,7 @@ def MidiToJSON(file):
                     ('offset', float(e.offset)),
                     ('duration', getDuration(e.duration.quarterLength))
                 ]))
+                print("Note")
             elif isinstance(e, music21.chord.Chord):
                 chord_notes = [str(p) for p in e.pitches]
                 output.append(OrderedDict([
@@ -82,6 +83,7 @@ def MidiToJSON(file):
                     ('duration', getDuration(e.duration.quarterLength)),
                     ('pitch', chord_notes)
                 ]))
+                print("Chord")
         return {
         'data': output
         }

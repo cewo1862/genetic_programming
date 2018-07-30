@@ -11,12 +11,13 @@ def main():
     parser.add_argument("file",type=str,help="path to file with parameters")
 
     args = parser.parse_args()
-
-    if not os.path.isfile(args.file):
-        print(args.file + " is no file")
+    inFile = args.file + ".json"
+    outFile = args.file + ".mid"
+    if not os.path.isfile(inFile):
+        print(inFile + " is no file")
         return
 
-    with open(args.file) as f:
+    with open(inFile) as f:
         data = json.load(f)
 
     s1 = stream.Stream()
@@ -59,7 +60,7 @@ def main():
 
             s1.append(note1)
     print(s1)
-    s1.write('midi', fp="./result" + ".mid")
+    s1.write('midi', fp= outFile)
     #s1.show('midi') # to hear the stream
 
 

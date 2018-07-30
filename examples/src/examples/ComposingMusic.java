@@ -117,7 +117,7 @@ public class ComposingMusic {
         //read filename from command line and create the filepath
         String filepath = "./resources/" + args[0];
         //read JSON-File found in given path and create an array of offset values
-        double[] offset_array = JSON_Reader.readJSON(filepath);
+        double[] offset_array = JSON_Reader.readJSON(filepath+".json");
 
         //map the offset values in the array to integer values
         MapOffset offset = new MapOffset();
